@@ -31,16 +31,28 @@ services:
 
   postgres:
     container_name: cat-shelter-api-postgres
+    restart: always
     build:
       context: ./docker/postgres
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - ./postgres_data:/var/lib/postgresql/data
     ports:
       - "8082:5432"
     environment:
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    networks:
+      - cat-shelter-api
+
+  adminer:
+    container_name: cat-shelter-api-adminer
+    restart: always
+    image: adminer
+    ports:
+      - "8083:8080"
+    depends_on:
+      - postgres
     networks:
       - cat-shelter-api
 
