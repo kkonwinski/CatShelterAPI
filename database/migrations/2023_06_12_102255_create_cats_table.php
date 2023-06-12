@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::create('cats', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->integer('shelter_id');
+            // $table->integer('shelter_id');
+            $table->foreignId('shelter_id')->constrained('shelters');
             $table->timestamps();
         });
     }
