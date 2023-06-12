@@ -1,0 +1,53 @@
+version: "3.8"
+services:
+  php:
+    container_name: cat-shelter-api-php
+    build:
+      context: ./docker/php
+    volumes:
+      - .:/var/www/html
+    ports:
+      - "8080:80"
+    environment:
+      - POSTGRES_HOST=postgres
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    networks:
+      - cat-shelter-api
+
+  nginx:
+    container_name: cat-shelter-api-nginx
+    build:
+      context: ./docker/nginx
+    volumes:
+      - .:/var/www/html
+    ports:
+      - "8081:80"
+    depends_on:
+      - php
+    networks:
+      - cat-shelter-api
+
+  postgres:
+    container_name: cat-shelter-api-postgres
+    build:
+      context: ./docker/postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "8082:5432"
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    networks:
+      - cat-shelter-api
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  cat-shelter-api:
+    driver: bridge
