@@ -9,6 +9,8 @@ class Shelter extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['name', 'address'];
+
     public function cats(){
         return $this->hasMany(Cat::class);
     }

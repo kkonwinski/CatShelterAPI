@@ -9,6 +9,8 @@ class Worker extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['name', 'shelter_id'];
+
     public function shelter(){
         return $this->belongsTo(Shelter::class);
     }
