@@ -14,7 +14,12 @@ class ShelterController extends Controller
     
     public function store(Request $request)
     {
-        return Shelter::create($request->all());
+        $validated = $request->validate([
+            'name' => 'required|max:255',
+            'address' => 'required',
+        ]);
+
+        return Shelter::create($validated);
     }
     
     public function show(Shelter $shelter)
@@ -24,7 +29,12 @@ class ShelterController extends Controller
     
     public function update(Request $request, Shelter $shelter)
     {
-        $shelter->update($request->all());
+        $validated = $request->validate([
+            'name' => 'required|max:255',
+            'address' => 'required',
+        ]);
+
+        $shelter->update($validated);
         return $shelter;
     }
     

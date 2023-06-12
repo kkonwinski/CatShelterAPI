@@ -8,4 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Shelter extends Model
 {
     use HasFactory;
+
+    public function cats(){
+        return $this->hasMany(Cat::class);
+    }
+
+    public function workers(){
+        return $this->hasMany(Worker::class);
+    }
 }

@@ -2,16 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Worker;
 use Illuminate\Http\Request;
 
 class WorkerController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        return Worker::all();
     }
 
     /**
@@ -19,30 +17,23 @@ class WorkerController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return Worker::create($request->all());
     }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    
+    public function show(Worker $worker)
     {
-        //
+        return $worker;
     }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    
+    public function update(Request $request, Worker $worker)
     {
-        //
+        $worker->update($request->all());
+        return $worker;
     }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    
+    public function destroy(Worker $worker)
     {
-        //
+        $worker->delete();
+        return response()->json(null, 204);
     }
 }
