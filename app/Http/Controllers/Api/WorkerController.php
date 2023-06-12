@@ -1,15 +1,19 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use App\Models\Worker;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\WorkerCollection;
+use App\Http\Resources\WorkerResource;
+use Illuminate\Http\JsonResponse;
 
 class WorkerController extends Controller
 {
     public function index()
     {
-        return Worker::all();
+        return new JsonResponse(Worker::paginate());
     }
 
     /**
@@ -22,7 +26,7 @@ class WorkerController extends Controller
     
     public function show(Worker $worker)
     {
-        return $worker;
+        return new WorkerResource($worker);
     }
     
     public function update(Request $request, Worker $worker)

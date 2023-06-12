@@ -1,15 +1,21 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use App\Models\Shelter;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\ShelterCollection;
+use App\Http\Resources\ShelterResource;
+use Illuminate\Database\Eloquent\Casts\Json;
+use Illuminate\Http\JsonResponse;
 
 class ShelterController extends Controller
 {
     public function index()
     {
-        return Shelter::all();
+        return new JsonResponse(Shelter::paginate()); 
+        // new ShelterCollection(Shelter::paginate());
     }
     
     public function store(Request $request)
@@ -24,7 +30,7 @@ class ShelterController extends Controller
     
     public function show(Shelter $shelter)
     {
-        return $shelter;
+        return new ShelterResource($shelter);
     }
     
     public function update(Request $request, Shelter $shelter)

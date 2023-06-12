@@ -1,10 +1,10 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\Api\CatController;
+use App\Http\Controllers\Api\ShelterController;
+use App\Http\Controllers\Api\WorkerController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ShelterController;
-use App\Http\Controllers\CatController;
-use App\Http\Controllers\WorkerController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -16,7 +16,8 @@ use App\Http\Controllers\WorkerController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-
-Route::apiResource('shelters', ShelterController::class);
-Route::apiResource('cats', CatController::class);
-Route::apiResource('workers', WorkerController::class);
+Route::group(['namespace'=>'App\Http\Controllers\Api'], function(){
+    Route::apiResource('shelters', ShelterController::class);
+    Route::apiResource('cats', CatController::class);
+    Route::apiResource('workers', WorkerController::class);
+});
