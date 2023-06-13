@@ -3,25 +3,21 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\Worker;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\WorkerRequest;
 use App\Http\Resources\WorkerCollection;
 use App\Http\Resources\WorkerResource;
-use Illuminate\Http\JsonResponse;
 
 class WorkerController extends Controller
 {
     public function index()
     {
-        return new JsonResponse(Worker::paginate());
+        return new WorkerCollection(Worker::paginate());
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function store(WorkerRequest $request)
     {
-        return Worker::create($request->all());
+        return new WorkerResource(Worker::create($request->validated()));
     }
     
     public function show(Worker $worker)
@@ -29,10 +25,10 @@ class WorkerController extends Controller
         return new WorkerResource($worker);
     }
     
-    public function update(Request $request, Worker $worker)
+    public function update(WorkerRequest $request, Worker $worker)
     {
-        $worker->update($request->all());
-        return $worker;
+        $worker->update($request->validated());
+        return new WorkerResource($worker);
     }
     
     public function destroy(Worker $worker)

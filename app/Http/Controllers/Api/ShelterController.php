@@ -2,52 +2,39 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\Shelter;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ShelterRequest;
+use App\Models\Shelter;
 use App\Http\Resources\ShelterCollection;
 use App\Http\Resources\ShelterResource;
-use Illuminate\Database\Eloquent\Casts\Json;
-use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 
 class ShelterController extends Controller
 {
-    public function index()
+    public function index(): ShelterCollection
     {
-        return new JsonResponse(Shelter::paginate()); 
-        // new ShelterCollection(Shelter::paginate());
+        return new ShelterCollection(Shelter::paginate());
     }
     
-    public function store(Request $request)
+    public function store(ShelterRequest $request): ShelterResource
     {
-        $validated = $request->validate([
-            'name' => 'required|max:255',
-            'address' => 'required',
-        ]);
-
-        return Shelter::create($validated);
+        return new ShelterResource(Shelter::create($request->validated()));
     }
     
-    public function show(Shelter $shelter)
+    public function show(Shelter $shelter): ShelterResource
     {
         return new ShelterResource($shelter);
     }
     
-    public function update(Request $request, Shelter $shelter)
+    public function update(ShelterRequest $request, Shelter $shelter): ShelterResource
     {
-        $validated = $request->validate([
-            'name' => 'required|max:255',
-            'address' => 'required',
-        ]);
-
-        $shelter->update($validated);
-        return $shelter;
+        $shelter->update($request->validated());
+        return new ShelterResource($shelter);
     }
     
-    public function destroy(Shelter $shelter)
+    public function destroy(Shelter $shelter): Response
     {
         $shelter->delete();
-        return response()->json(null, 204);
-    }
-    
+        return response(null, Response::HTTP_NO_CONTENT);
+    }    
 }

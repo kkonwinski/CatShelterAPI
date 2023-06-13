@@ -3,22 +3,21 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\Cat;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CatRequest;
 use App\Http\Resources\CatCollection;
 use App\Http\Resources\CatResource;
-use Illuminate\Http\JsonResponse;
 
 class CatController extends Controller
 {
     public function index()
 {
-    return new JsonResponse(new CatCollection(Cat::paginate()));
+    return new CatCollection(Cat::paginate());
 }
 
-public function store(Request $request)
+public function store(CatRequest $request)
 {
-    return Cat::create($request->all());
+    return new CatResource(Cat::create($request->validated()));
 }
 
 public function show(Cat $cat)
@@ -26,10 +25,10 @@ public function show(Cat $cat)
     return new CatResource($cat);
 }
 
-public function update(Request $request, Cat $cat)
+public function update(CatRequest $request, Cat $cat)
 {
-    $cat->update($request->all());
-    return $cat;
+    $cat->update($request->validated());
+    return new CatResource($cat);
 }
 
 public function destroy(Cat $cat)
